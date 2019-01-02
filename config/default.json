@@ -1,0 +1,9 @@
+{
+	"Gallery":{
+		"dbConfig": {
+			"host": "localhost",
+			"dbName": "gallery",
+			"port": 27017
+		}
+	}
+}

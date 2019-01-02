@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" ng-app="angularGallery">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Image Gallery</title>
+    <% include ../partials/head.ejs %>
+</head>
+<body ng-controller="loginCtrl">
+    <% include ../partials/navMini.ejs %>
+    <div class="container">
+        <h4>Login</h4>
+        <div class="card card-login mx-auto">
+            <div class="card-header">Acceso Usuarios</div>
+            <div class="card-body">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Nombre Usuario" ng-model="_username">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Contraseña" ng-model="_userpassword">
+                </div>
+                <div class="d-flex justify-content-end card-buttons">
+                    <button type="button" class="btn btn-outline-dark">Cancel</button>
+                    <button type="button" class="btn btn-primary" ng-click="login()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% include ../partials/footer.ejs %>
+    <% include ../partials/javascripts.ejs %>
+    <script src="controllers/loginCtrl.js"></script>
+</body>
+</html>

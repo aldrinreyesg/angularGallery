@@ -1,0 +1,32 @@
+{
+     "name": "angularGallery",
+     "version": "0.0.1",
+     "description": "Angular Gallery Proyect",
+     "dependencies": {
+          "config": "^3.0.1",
+          "cookie-parser": "^1.4.3",
+          "ejs-lint": "^0.3.0",
+          "express": "*",
+          "express-flash": "0.0.2",
+          "express-session": "^1.15.6",
+          "install": "^0.12.2",
+          "mongoose": "^5.4.1",
+          "nodemon": "^1.18.9",
+          "npm": "^6.5.0"
+     },
+     "engine": "node >=0.6.x",
+     "scripts": {
+          "start": "nodemon server.js"
+     },
+     "main": "server.js",
+     "repository": {
+          "type": "git",
+          "url": ""
+     },
+     "author": "Aldrin Reyes G.",
+     "license": "AGPL-1.0-only",
+     "bugs": {
+          "url": ""
+     },
+     "homepage": "/"
+}
