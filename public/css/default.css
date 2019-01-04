@@ -2,6 +2,17 @@
   min-width: 250px;
   max-width: 400px;
 }
+.card-login .card-body {
+  padding: 0 !important;
+}
+.card-login .card-body .progress {
+  border-radius: 0 !important;
+  height: 6px;
+}
+.card-login .card-body .container {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
 
 .card-buttons {
   margin-top: 1rem;
@@ -11,7 +22,7 @@
 }
 
 .container-sm {
-  width: 80%;
+  width: 90%;
   padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;

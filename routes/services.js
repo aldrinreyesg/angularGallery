@@ -1,59 +1,49 @@
-var path = require('path');
-var flash = require('express-flash');
+var userCollection = require('../collection/users');
 
 var appRouter = function(app, db) {
-	app.get("/services/login", function(req, res) {
+	app.post("/services/login", function(req, res) {
+        // console.log(req);
         var username = req.query._username;
         var userpassword = req.query._userpassword;
-        var jsRes = {};
 
-        res.setHeader('Content-Type', 'application/json');
+        console.log('Requerimiento: ' + JSON.stringify({ user: username, pass: userpassword}));
 
-        if (username != null && userpassword != null)
-        {
-            // var token = null;
-            var document = db.collection("users").findOne({name: username, pass: userpassword}, function (err, result) {
-                var jsRes = {};
-                if (err) throw err;
-                // console.log(result);
-
-                if(result != null){
-                    if(result.name === username && result.pass === userpassword) {
-                        const crypto = require('crypto')
-                        const token = crypto.randomBytes(24).toString('hex');
-                        console.log('user access correct');
-                        jsRes = {
-                            valid: true,
-                            message: 'Bienvanido ' + result.name,
-                            token: token }
-                    }else{
-                        console.log('user access error, user: '+ username);
-                        jsRes = {
-                            valid: false,
-                            message: 'Usuario o contraseña incorrecta'
-                        }
+        var dataPromise = userCollection(db, username, userpassword);
+        dataPromise.then(function (user) {
+            // console.log(user);
+            // console.log(user.name);
+            if (user != null) {
+                if (user.name === username && user.pass === userpassword) {
+                    const crypto = require('crypto')
+                    const token = crypto.randomBytes(24).toString('hex');
+                    console.log('Usuario identificado correctamente');
+                    return {
+                        valid: true,
+                        message: 'Bienvanido ' + user.name,
+                        token: token
                     }
-
-                }else {
-                    console.log('user access error, user: '+ username);
-                    jsRes = {
+                } else {
+                    console.log('Usuario o contraseña incorrecta, Usuario: ' + username);
+                    return  {
                         valid: false,
                         message: 'Usuario o contraseña incorrecta'
                     }
                 }
-                // callback(result.toArray());
-                // console.log("asdads" + JSON.stringify(jsRes));
-                // result.jsRes = jsRes;
-                // return result;
-                db.close();
-                req.session.data = jsRes;
-            });
-            jsRes = req.session.data;
-        }else{
-            jsRes = { valid: false, message: 'Usuario o contraseña incorrecta' };
-            console.log("blank user and pass");
-        }
-        res.send(JSON.stringify(jsRes));
+
+            } else {
+                console.log('user access error, user: ' + username);
+                return {
+                    valid: false,
+                    message: 'Usuario o contraseña incorrecta'
+                }
+            }
+
+        }).then(function (data) {
+            console.log(data);
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify(data));
+        });
+
     });
 };
 

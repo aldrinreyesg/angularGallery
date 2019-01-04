@@ -7,10 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Image Gallery</title>
     <% include ../partials/head.ejs %>
+    <link rel="stylesheet" href="/css/bootstrap-table.css">
 
 </head>
 <body ng-controller="mainCtrl">
-    <% include ../partials/navClie.ejs %>
+    <% include ../partials/navAdmin.ejs %>
 {{ expressFlash }}
     <% if ( expressFlash ) {
 
@@ -64,12 +65,14 @@
     <% } %>
 
 
-
-
-
-        <!--{{ message }}-->
+        <main>
+            <%- content %>
+        </main>
+    <!--{{ message }}-->
     <% include ../partials/footer.ejs %>
     <% include ../partials/javascripts.ejs %>
+    <script src="/js/bootstrap-table.js"></script>
+    <script src="/js/bootstrap-table-es-CL.js"></script>
 
 </body>
 </html>
