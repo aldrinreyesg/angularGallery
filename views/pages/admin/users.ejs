@@ -3,7 +3,7 @@
 <div class="container-sm">
     <h3>Usuarios</h3>
 </div>
-<div class="row">
+<div class="row mr-2">
     <div class="col-2">
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Lista</a>
@@ -15,18 +15,32 @@
     <div class="col-10">
         <div class="tab-content" id="v-pills-tabContent">
             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                <table
+                <div id="toolbar">
+                    <button class="btn btn-primary">Add</button>
+                </div>
+                <table id="table"
                     data-toggle="table"
                     data-classes="table"
                     data-striped="true"
                     data-search="true"
                     data-pagination="true"
                     data-page-number="1"
-                    data-show-refresh="true">
+                    data-show-refresh="true"
+                       data-toolbar="#toolbar"
+
+                       data-side-pagination="server"
+                       data-pagination="true"
+                       data-url="http://localhost:3000/services/usersTable?token=asdasd"
+                >
                     <thead>
                         <tr>
-                            <th>Usuario</th>
-                            <th>Habilitado</th>
+                            <th><input type="checkbox" id="checkall" /></th>
+                            <th data-field="name">Usuario</th>
+                            <th data-field="enabled" data-formatter="booleanFormatter" data-align="center">Habilitado</th>
+                            <th data-field="role">Role</th>
+                            <th data-field="token">Token</th>
+                            <th data-field="created" data-formatter="dateFormatter">Creado</th>
+                            <th data-field="last" data-formatter="dateFormatter">Ultima Visita</th>
                         </tr>
                     </thead>
                 </table>
@@ -37,3 +51,17 @@
         </div>
     </div>
 </div>
+<script src="/js/moment.js"></script>
+<script>
+    function booleanFormatter(value, row, index) {
+        if(value){
+            return '<div class="text-success"><i class="fas fa-user-check"></i></div>';
+        }else{
+            return '<span class="text-center text-danger"><i class="fas fa-user-times"></i></span>';
+        }
+    }
+    function dateFormatter(value, row, index) {
+        var date = moment(value);
+        return date.format("YYYY-MM-DDD");
+    }
+</script>

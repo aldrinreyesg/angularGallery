@@ -12,9 +12,21 @@ var getUserLogin = function(db, username, password) {
                     res(result);
                 }
                 // db.close();
-
             });
         }
     });
 }
-module.exports = getUserLogin;
+
+var getUsers = function(db) {
+    return new Promise(function (res, rej) {
+        db.collection("users").find({}).toArray(function (err, result) {
+            if (err) {
+                rej(err);
+            } else {
+                res(result);
+            }
+        });
+    });
+}
+module.exports.getUserLogin = getUserLogin;
+module.exports.getUsers = getUsers;

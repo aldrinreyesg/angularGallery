@@ -1,12 +1,12 @@
 var userCollection = require('../collection/users');
 
 var appRouter = function(app, db) {
-	app.post("/services/login", function(req, res) {
+    app.post("/services/login", function (req, res) {
         // console.log(req);
         var username = req.query._username;
         var userpassword = req.query._userpassword;
 
-        console.log('Requerimiento: ' + JSON.stringify({ user: username, pass: userpassword}));
+        console.log('Requerimiento: ' + JSON.stringify({user: username, pass: userpassword}));
 
         var dataPromise = userCollection(db, username, userpassword);
         dataPromise.then(function (user) {
@@ -24,7 +24,7 @@ var appRouter = function(app, db) {
                     }
                 } else {
                     console.log('Usuario o contraseña incorrecta, Usuario: ' + username);
-                    return  {
+                    return {
                         valid: false,
                         message: 'Usuario o contraseña incorrecta'
                     }
@@ -45,7 +45,32 @@ var appRouter = function(app, db) {
         });
 
     });
-};
+    app.get("/services/usersTable", function (req, res) {
+        var token = req.query.token;
 
+        var dataPromise = userCollection.getUsers(db);
+        dataPromise
+            .then(function (rows) {
+                if (token != null) {
+                    return {
+                        valid: true,
+                        message: '200',
+                        total: 1,
+                        rows
+                    }
+                } else {
+                    return {
+                        valid: false,
+                        message: 'Token Inválido.'
+                    }
+                }
+            })
+            .then(function (data) {
+                console.log(data);
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify(data));
+            });
+    });
 
+}
 module.exports = appRouter;

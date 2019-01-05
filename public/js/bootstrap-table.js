@@ -10,7 +10,7 @@
     // TOOLS DEFINITION
     // ======================
 
-    var bootstrapVersion = 3;
+    var bootstrapVersion = 4;
     try {
         bootstrapVersion = parseInt($.fn.dropdown.Constructor.VERSION, 10);
     } catch (e) {}
@@ -37,17 +37,17 @@
         },
         4: {
             buttonsClass: 'secondary',
-            iconsPrefix: 'fa',
+            iconsPrefix: 'fas',
             icons: {
-                paginationSwitchDown: 'fa-toggle-down',
-                paginationSwitchUp: 'fa-toggle-up',
-                refresh: 'fa-refresh',
-                toggleOff: 'fa-toggle-off',
-                toggleOn: 'fa-toggle-on',
-                columns: 'fa-th-list',
-                detailOpen: 'fa-plus',
-                detailClose: 'fa-minus',
-                fullscreen: 'fa-arrows-alt'
+                paginationSwitchDown: 'fa-caret-square-down',
+                paginationSwitchUp: 'fa-caret-square-up',
+                refresh: 'fa-sync-alt',
+                toggleOff: 'fa-list-alt',
+                toggleOn: 'fa-list-alt',
+                columns: 'fa-th',
+                detailOpen: 'fa-plus-circle',
+                detailClose: 'fa-minus-circle',
+                fullscreen: 'fa-window-maximize'
             },
             pullClass: 'float',
             toobarDropdowHtml: ['<div class="dropdown-menu dropdown-menu-right">', '</div>'],

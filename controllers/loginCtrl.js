@@ -6,8 +6,7 @@ angularGallery.controller('loginCtrl', function($scope) {
 
 angularGallery.controller('loginCtrl', function ($scope, $http) {
     $scope.login = function() {
-        // $scope.login.attr("disabled", "disabled");
-        // .addClass('disabled');
+        var timeout = 20000;
         angular.element('.submit').attr("disabled", "disabled");
         angular.element('#ajax-msg')
             .addClass("fade")
@@ -20,7 +19,8 @@ angularGallery.controller('loginCtrl', function ($scope, $http) {
             params: {
                 _username: $scope._username,
                 _userpassword: $scope._userpassword
-            }
+            },
+            timeout: timeout
         }).then(function mySuccess(response) {
             console.log(response);
             $scope._userpassword = '';
