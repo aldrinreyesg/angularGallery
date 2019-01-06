@@ -1,7 +1,7 @@
-<% extend('../admin') %>
+<% extend('../theme-admin') %>
 
 <div class="container-sm">
-    <h3>Usuarios</h3>
+    <h4>Usuarios</h4>
 </div>
 <div class="row mr-2">
     <div class="col-2">
@@ -29,14 +29,13 @@
                        data-toolbar="#toolbar"
 
                        data-side-pagination="server"
-                       data-pagination="true"
                        data-url="http://localhost:3000/services/usersTable?token=asdasd"
                 >
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="checkall" /></th>
                             <th data-field="name">Usuario</th>
-                            <th data-field="enabled" data-formatter="booleanFormatter" data-align="center">Habilitado</th>
+                            <th data-field="enabled" data-formatter="userBooleanFormatter" data-align="center">Habilitado</th>
                             <th data-field="role">Role</th>
                             <th data-field="token">Token</th>
                             <th data-field="created" data-formatter="dateFormatter">Creado</th>
@@ -51,17 +50,4 @@
         </div>
     </div>
 </div>
-<script src="/js/moment.js"></script>
-<script>
-    function booleanFormatter(value, row, index) {
-        if(value){
-            return '<div class="text-success"><i class="fas fa-user-check"></i></div>';
-        }else{
-            return '<span class="text-center text-danger"><i class="fas fa-user-times"></i></span>';
-        }
-    }
-    function dateFormatter(value, row, index) {
-        var date = moment(value);
-        return date.format("YYYY-MM-DDD");
-    }
-</script>
+<script src="/js/bootstrap-table-formatter.js"></script>

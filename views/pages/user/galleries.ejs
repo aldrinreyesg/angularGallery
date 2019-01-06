@@ -1,0 +1,54 @@
+<% extend('../theme-user') %>
+
+<div class="container-sm">
+    <h4>Mis Gallerias</h4>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-1 col-sm-2">
+            <ul class="nav flex-column" ng-repeat="gallery in galleries">
+                <li class="d-flex justify-content-between px-0">
+                    <div ng-model="galVisibleColor" class="pt-2 text-success">
+                        <a href ng-click="galleryVisible({{ gallery.id }}, true)"><i ng-model="galVisiblePublicTrue" class="fas fa-eye"></i></a>
+                        <i ng-model="galVisiblePublicFalse" ng-click="galleryVisible({{ gallery.id }}, false)" class="fas fa-eye-slash fade"></i>
+                    </div>
+                    <a href ng-click='setSelectedGallery(gallery)' class="nav-link active">
+                        {{ gallery.name }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-11 col-sm-10">
+            <div id="toolbar">
+                <button class="btn btn-primary">Add</button>
+            </div>
+            <table id="table"
+                   data-toggle="table"
+                   data-classes="table"
+                   data-striped="true"
+                   data-search="true"
+                   data-pagination="true"
+                   data-page-number="1"
+                   data-show-refresh="true"
+                   data-toolbar="#toolbar"
+
+                   data-side-pagination="server"
+                   data-url="http://localhost:3000/services/images?token=asdasd"
+            >
+                <thead>
+                <tr>
+                    <th><input type="checkbox" id="checkall" /></th>
+                    <th data-field="name">Nombre</th>
+                    <th data-field="public" data-formatter="publicFormatter" data-align="center">Público</th>
+                    <th data-field="filename">Archivo</th>
+                    <th data-field="type">Tipo</th>
+                    <th data-field="created" data-formatter="dateFormatter">Creado</th>
+                    <th data-field="url" data-formatter="shortenFormatter">URL</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="/js/bootstrap-table-formatter.js"></script>

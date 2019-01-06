@@ -45,4 +45,7 @@ angularGallery.controller('loginCtrl', function ($scope, $http) {
             angular.element('.progress').addClass("fade");
         });
     }
+    $scope.cancel = function() {
+        window.location.href = "/";
+    }
 });

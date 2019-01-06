@@ -3,6 +3,7 @@ var flash = require('express-flash');
 const isset = require('isset');
 
 var appRouter = function(app) {
+    //Normal User Route
     app.use(flash());
     app.use(function(req, res, next){
         res.locals.sessionFlash = req.session.sessionFlash;
@@ -20,7 +21,7 @@ var appRouter = function(app) {
             res.redirect('/admin');
 
         }else {
-            res.render('pages/default', {
+            res.render('pages/default/home', {
                 root: path.join(__dirname, '../views/pages'),
                 expressFlash: res.locals.sessionFlash,
             });
@@ -33,6 +34,21 @@ var appRouter = function(app) {
     app.get("/logout", function(req, res) {
         // TODO implementar logout
         res.redirect('/');
+    });
+
+
+    //Auth User Route
+    app.get("/user", function(req, res) {
+        res.render('pages/user/home', {
+            root: path.join(__dirname, '../views/pages'),
+            expressFlash: res.locals.sessionFlash,
+        });
+    });
+    app.get("/user/galleries", function(req, res) {
+        res.render('pages/user/galleries', {
+            root: path.join(__dirname, '../views/pages'),
+            expressFlash: res.locals.sessionFlash,
+        });
     });
 
 };
