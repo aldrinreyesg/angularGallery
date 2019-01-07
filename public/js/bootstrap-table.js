@@ -36,7 +36,7 @@
             pageDropdownItemHtml: '<li role="menuitem" class="%s"><a href="#">%s</a></li>'
         },
         4: {
-            buttonsClass: 'secondary',
+            buttonsClass: 'outline-secondary',
             iconsPrefix: 'fas',
             icons: {
                 paginationSwitchDown: 'fa-caret-square-down',

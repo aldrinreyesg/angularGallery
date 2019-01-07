@@ -11,6 +11,7 @@
           "express-flash": "0.0.2",
           "express-session": "^1.15.6",
           "install": "^0.12.2",
+          "is-valid-json": "^1.0.2",
           "isset": "^1.0.4",
           "moments": "0.0.2",
           "mongoose": "^5.4.1",
@@ -27,7 +28,7 @@
           "url": ""
      },
      "author": "Aldrin Reyes G.",
-     "license": "FTL",
+     "license": "MIT",
      "bugs": {
           "url": ""
      },

@@ -9,6 +9,10 @@ function dateFormatter(value, row, index) {
     var date = moment(value);
     return date.format("YYYY-MM-DDD");
 }
+function dateTimeFormatter(value, row, index) {
+    var date = moment(value);
+    return date.format("YYYY-MM-DDD hh:mm:ss");
+}
 function publicFormatter(value, row, index) {
     if(value){
         return '<div class="text-success"><i class="fas fa-eye"></i></div>';
@@ -25,4 +29,11 @@ function shortenFormatter(value, row, index) {
         str = value;
     }
     return str;
+}
+function checkboxFormatter(value, row, index) {
+    var html =
+        // '<div class="form-group">' +
+        '<input type="checkbox" class="form-control">';
+        // '</div>';
+    return html;
 }

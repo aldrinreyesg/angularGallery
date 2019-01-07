@@ -41,7 +41,7 @@ var appRouter = function(app, db) {
             }
 
         }).then(function (data) {
-            console.log(data);
+            // console.log(data);
             res.setHeader('Content-Type', 'application/json');
             res.send(JSON.stringify(data));
         });
@@ -69,7 +69,7 @@ var appRouter = function(app, db) {
                 }
             })
             .then(function (data) {
-                console.log(data);
+                // console.log(data);
                 res.setHeader('Content-Type', 'application/json');
                 res.send(JSON.stringify(data));
             });
@@ -97,7 +97,7 @@ var appRouter = function(app, db) {
                 }
             })
             .then(function (data) {
-                console.log(data);
+                // console.log(data);
                 res.setHeader('Content-Type', 'application/json');
                 res.send(JSON.stringify(data));
             });
@@ -119,7 +119,7 @@ var appRouter = function(app, db) {
                     return {
                         valid: true,
                         message: '200',
-                        total: 1,
+                        total: rows.length,
                         rows
                     }
                 } else {
@@ -130,11 +130,97 @@ var appRouter = function(app, db) {
                 }
             })
             .then(function (data) {
-                console.log(data);
+                // console.log(data);
                 res.setHeader('Content-Type', 'application/json');
                 res.send(JSON.stringify(data));
             });
     });
 
+    app.get("/services/imageUpload", function (req, res) {
+        var token = req.query.token;
+        var row = JSON.parse(req.query.row);
+        var isJSON = require('is-valid-json');
+        var path = require('path');
+        var moment = require('moment');
+
+        if( isJSON( row ) ) {
+
+            var imageRow = {
+                id: 5,
+                name: row.name,
+                descript: row.desc,
+                filename: row.image.split('\\').pop(),
+                type: path.extname(row.image),
+                public: row.public,
+                galleryid: 1,
+                created: moment().format("YYYY-MM-DD hh:mm:ss"),
+                url: "http://localhost:3000/gallery/image/" + row.image.split('\\').pop()
+            }
+
+            var dataPromise = imagesCollection.setImage(db, imageRow);
+            dataPromise
+                .then(function (rows) {
+                    if (token != null) {
+                        return {
+                            valid: true,
+                            message: 'Imágen agregada'
+                        }
+                    } else {
+                        return {
+                            valid: false,
+                            message: 'Token Inválido.'
+                        }
+                    }
+                })
+                .then(function (data) {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.send(JSON.stringify(data));
+                });
+        }else{
+            var data = {
+                valid: false,
+                message: 'Estructura enviada no es válida.'
+            }
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify(data));
+        }
+    });
+
+    app.get("/services/imageDelete", function (req, res) {
+        var token = req.query.token;
+        var row = JSON.parse(req.query.row);
+        // console.log(row);
+        var isJSON = require('is-valid-json');
+
+        if( isJSON( row ) ) {
+            var dataPromise = imagesCollection.delImage(db, row);
+            dataPromise
+                .then(function (rows) {
+                    if (token != null) {
+                        return {
+                            valid: true,
+                            message: 'Imágen eliminada'
+                        }
+                    } else {
+                        return {
+                            valid: false,
+                            message: 'Token Inválido.'
+                        }
+                    }
+                })
+                .then(function (data) {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.send(JSON.stringify(data));
+                });
+
+        }else{
+            var data = {
+                valid: false,
+                message: 'Estructura enviada no es válida.'
+            }
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify(data));
+        }
+    });
 }
 module.exports = appRouter;

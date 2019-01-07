@@ -66,6 +66,13 @@
             </div>
 
     <% } %>
+    <div class="alert alert-dismissible fade" id="ajax-msg" role="alert">
+        <span>{{ msgText }}</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
     <main>
         <%- content %>
     </main>
