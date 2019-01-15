@@ -1,8 +1,9 @@
 Gallería de Imágenes demo con AngularJS, Node Server y Mongodb
 --------------------------------------------------------------
 
+Gallería de imágenes simple y basada en NodeJs, AngularJS y MongoDb
 
-Gallería de imágenes simple y basada en Node y AngularJS
+Utilizando Bootstrap 4 y Bootstrap-table
 
 
 Install
