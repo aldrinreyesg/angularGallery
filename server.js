@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(session({
 	secret: 'keyboard cat',
 	resave: true,
-	saveUninitialized: true,
+	saveUninitialized: false,
 	cookie: { secure: true }
 	}));
 app.use(flash());
