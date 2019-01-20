@@ -77,8 +77,13 @@ var appRouter = function(app, db) {
 
     app.get("/services/galleries", function (req, res) {
         var token = req.query.token;
-        var user = req.query.user;
-
+        var user = "";
+        var userPromise = userCollection.getUserByToken(db, token);
+        userPromise
+            .then(function (row) {
+               user = row.name;
+               console.log(row);
+            });
         var dataPromise = galleryCollection.getUserGalleries(db, user);
         dataPromise
             .then(function (rows) {
