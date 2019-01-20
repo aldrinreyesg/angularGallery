@@ -4,7 +4,7 @@
 <!--</div>-->
 <div class="container-fluid">
     <div class="row">
-        <div class="col-1 col-sm-2">
+        <div class="col-1 col-sm-2" ng-controller="galleries" data-ng-init="init()">
             <h3>Mis Gallerias</h3>
             <ul class="nav flex-column" ng-repeat="gallery in galleries">
                 <li class="d-flex px-0">
@@ -18,7 +18,7 @@
                 </li>
             </ul>
         </div>
-        <div class="col-11 col-sm-10">
+        <div class="col-11 col-sm-10" ng-controller="images">
             <div id="toolbar">
                 <div class="btn-group">
                     <button id="btn-add-img" class="btn btn-outline-secondary" data-toggle="modal" data-target=".modal-add-img"><i class="fas fa-plus"></i></button>
@@ -61,7 +61,7 @@
 </div>
 
 <!--modal add-image-->
-<div class="modal modal-add-img" tabindex="-1" role="dialog">
+<div class="modal modal-add-img" tabindex="-1" role="dialog" ng-controller="imageModal" data-ng-init="init()">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form ng-submit="newImage()">
@@ -90,14 +90,14 @@
                     </div>
                     <div class="input-group">
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01" ng-model="inputGroupFile01" name="inputGroupFile01" aria-describedby="inputGroupFileAddon01" accept="image/*" required>
+                            <input type="file" class="custom-file-input" id="inputGroupFile01" nv-file-select="" uploader="uploader" name="inputGroupFile01" aria-describedby="inputGroupFileAddon01" accept="image/*" required>
                             <label class="custom-file-label" for="inputGroupFile01" id="inputGroupFile01Label">Seleccionar Archivo</label>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess"><i class="fas fa-upload"></i> Guardar</button>
                 </div>
             </form>
         </div>
@@ -105,6 +105,7 @@
 </div>
 
 <script src="/js/bootstrap-table-formatter.js"></script>
+<script src="/js/angular-file-upload.js"></script>
 <script>
     $("#inputGroupFile01").change(function () {
         $("#inputGroupFile01Label").html($(this).val());

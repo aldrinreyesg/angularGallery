@@ -28,5 +28,18 @@ var getUsers = function(db) {
         });
     });
 }
+
+var getUserByToken = function(db, token) {
+    return new Promise(function (res, rej) {
+        db.collection("users").find({token: token}, function (err, result) {
+            if (err) {
+                rej(err);
+            } else {
+                res(result);
+            }
+        });
+    });
+}
 module.exports.getUserLogin = getUserLogin;
 module.exports.getUsers = getUsers;
+module.exports.getUserByToken = getUserByToken;
