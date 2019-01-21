@@ -1,27 +1,59 @@
 var express = require('express');
+
 var path = require('path');
 
 
-var config = require('config');
 var mongoose = require("mongoose");
+var fs = require('fs');
 var bodyParser = require('body-parser');
 
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var flash = require('express-flash');
+const favicon = require('express-favicon');
+var errorHandler = require('express-error-handler');
+var dbConn = require('./utils/dbConn');
+
+//logger
+var morgan = require('morgan');
+var winston = require('./config/winston');
 
 var app = express();
+var server;
+
+//all environments
+app.set('port', process.env.PORT || 3000);
+app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(morgan('combined', { stream: winston.stream }));
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.static(__dirname + '/public'));
+
+
+// development only
+if ('development' == app.get('env')) {
+    app.use(errorHandler({server: server}));
+
+	var dbString22 = dbConn(app.get('env'));
+	console.log(dbString22);
+    var dbString = "mongodb://angall:WrwNtjEp1RWHENlI@quirisoft-shard-00-00-hiyhh.mongodb.net:27017,quirisoft-shard-00-01-hiyhh.mongodb.net:27017,quirisoft-shard-00-02-hiyhh.mongodb.net:27017/gallery?ssl=true&replicaSet=quirisoft-shard-0&authSource=admin&retryWrites=true"
+    mongoose.connect(dbString, { useNewUrlParser: true });
+}
+
+
+//load all files in models dir
+fs.readdirSync(__dirname + '/models').forEach(function(filename) {
+    if (~filename.indexOf('.js')) require(__dirname + '/models/' + filename)
+});
+
 
 //Database
-var dbCon = config.get('Gallery.dbConfig');
-//var dbString = "mongodb" + '://' + dbCon.get('host') + ':' + dbCon.get('port') + '/' + dbCon.get('dbName');
-var dbString = "mongodb://angall:WrwNtjEp1RWHENlI@quirisoft-shard-00-00-hiyhh.mongodb.net:27017,quirisoft-shard-00-01-hiyhh.mongodb.net:27017,quirisoft-shard-00-02-hiyhh.mongodb.net:27017/gallery?ssl=true&replicaSet=quirisoft-shard-0&authSource=admin&retryWrites=true"
-mongoose.connect(dbString, { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
 	console.log("Connected to mongodb");
+	winston.info("Connected to mongodb");
 });
 
 
@@ -42,7 +74,7 @@ app.use(session({
 	}));
 app.use(flash());
 
-app.use(express.static(__dirname + '/public'));
+
 
 app.engine('ejs', require('express-ejs-extend'));
 app.set('views',path.join(__dirname,'views'));
@@ -60,5 +92,10 @@ var adminPages = require('./routes/admin.js')(app);
 //     next();
 // });
 
-app.listen(3000, 'localhost');
-console.log("Angular Gallery Server is Listening on port 3000");
+// app.listen(app.get('port'), 'localhost');
+// console.log("Angular Gallery Server is Listening on port 3000");
+
+
+server = app.listen(app.get('port'), function(){
+    console.log('server is running at %s .', server.address().port);
+});
