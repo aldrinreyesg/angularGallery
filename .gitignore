@@ -4,4 +4,5 @@ node_modules/
 #phpStorm
 .idea/
 
+#logs
 logs/
