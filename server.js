@@ -34,9 +34,7 @@ app.use(express.static(__dirname + '/public'));
 if ('development' == app.get('env')) {
     app.use(errorHandler({server: server}));
 
-	var dbString22 = dbConn(app.get('env'));
-	console.log(dbString22);
-    var dbString = "mongodb://angall:WrwNtjEp1RWHENlI@quirisoft-shard-00-00-hiyhh.mongodb.net:27017,quirisoft-shard-00-01-hiyhh.mongodb.net:27017,quirisoft-shard-00-02-hiyhh.mongodb.net:27017/gallery?ssl=true&replicaSet=quirisoft-shard-0&authSource=admin&retryWrites=true"
+	var dbString = dbConn(app.get('env'));
     mongoose.connect(dbString, { useNewUrlParser: true });
 }
 

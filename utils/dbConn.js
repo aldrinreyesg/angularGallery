@@ -10,10 +10,10 @@ function dbSting(env) {
         var dev = config.development;
         for (server in dev.servers)
         {
-            str = str + dev.servers[server].host + ':' + dev.servers[server].port + ','
+            str = str + dev.servers[server].host + ':' + dev.servers[server].port + ',';
         }
 
-        str = str +
+        str = str.substr(0,str.length-1) + '/' +
             dev.connection.dbName +
             '?ssl=' + dev.connection.ssl +
             '&replicaSet=' + dev.connection.replicaSet +
@@ -27,17 +27,3 @@ function dbSting(env) {
 }
 
 module.exports = dbSting;
-
-//var dbString = "mongodb://angall:WrwNtjEp1RWHENlI@
-//quirisoft-shard-00-00-hiyhh.mongodb.net:27017,
-//quirisoft-shard-00-01-hiyhh.mongodb.net:27017,
-//quirisoft-shard-00-02-hiyhh.mongodb.net:27017
-//
-///gallery?
-//ssl=true
-//&
-//replicaSet=quirisoft-shard-0
-//&
-//authSource=admin
-//&
-//retryWrites=true"
