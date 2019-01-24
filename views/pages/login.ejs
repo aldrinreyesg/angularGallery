@@ -7,6 +7,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Image Gallery</title>
     <% include ../partials/head.ejs %>
+    <style>
+        .ng-required{
+            border-color: #fb7977;
+        }
+        .field-message {
+            padding-left: 1rem;
+            color: #fb4445;
+            font-size: small;
+        }
+    </style>
 </head>
 <body ng-controller="loginCtrl">
     <% include ../partials/navMini.ejs %>
@@ -18,7 +28,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form action="">
+        <form action="" ng-submit="login()" name="loginForm">
         <div class="card card-login mx-auto">
             <div class="card-header">Acceso Usuarios</div>
             <div class="card-body">
@@ -27,14 +37,27 @@
                 </div>
                 <div class="container">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Nombre Usuario" ng-model="_username">
+                        <input type="text" name="username" class="form-control" placeholder="Nombre Usuario" required ng-model="_username" ng-required="required">
+                        <div class="field-message"
+                             ng-messages="loginForm.username.$error"
+                             ng-if='loginForm.username.$dirty' ng-cloak>
+                            <div ng-message="required">Username is required</div>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" placeholder="Contraseña" ng-model="_userpassword">
+                        <input type="password" name="password" class="form-control" placeholder="Contraseña" required ng-model="_userpassword" ng-minlength="6" ng-maxlength="10" ng-required="required">
+                        <span ng-show="loginForm.password.$dirty && loginForm.password.$error.required">asdasdassss</span>
+                        <div class="field-message"
+                             ng-messages="loginForm.password.$error"
+                             ng-if='loginForm.password.$dirty' ng-cloak>
+                            <div ng-message="required">Password is required</div>
+                            <div ng-message="minlength">Password must have minimum 6 characters</div>
+                            <div ng-message="maxlength">Password must have maximum 10 characters</div>
+                        </div>
                     </div>
                     <div class="d-flex justify-content-end card-buttons">
                         <button type="button" class="btn btn-outline-dark" ng-click="cancel()">Cancel</button>
-                        <button type="submit" class="btn btn-primary submit" ng-click="login()">Submit</button>
+                        <button type="submit" class="btn btn-primary submit" >Submit</button>
                     </div>
                 </div>
             </div>

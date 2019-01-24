@@ -1,6 +1,6 @@
-var userCollection = require('../collection/users');
-var galleryCollection = require('../collection/gallery');
-var imagesCollection = require('../collection/images');
+var userCollection = require('../../collection/users');
+var galleryCollection = require('../../collection/gallery');
+var imagesCollection = require('../../collection/images');
 // var User = require('../model/schema/User');
 
 var appRouter = function(app, db) {
