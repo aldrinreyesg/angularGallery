@@ -6,6 +6,8 @@ angularGallery.controller('loginCtrl', function($scope) {
 
 angularGallery.controller('loginCtrl', function ($scope, $http) {
     $scope.login = function() {
+
+
         var timeout = 20000;
         angular.element('.submit').attr("disabled", "disabled");
         angular.element('#ajax-msg')
@@ -43,6 +45,7 @@ angularGallery.controller('loginCtrl', function ($scope, $http) {
             $scope.msgText = response.data.message;
             angular.element('#ajax-msg').removeClass("fade");
             angular.element('.progress').addClass("fade");
+            angular.element('.submit').removeAttr("disabled");
         });
     }
     $scope.cancel = function() {

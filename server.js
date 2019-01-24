@@ -1,52 +1,67 @@
 var express = require('express');
-
 var path = require('path');
-
-
-var mongoose = require("mongoose");
-var fs = require('fs');
 var bodyParser = require('body-parser');
-
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
+var mongoose = require("mongoose");
+var fs = require('fs');
 var flash = require('express-flash');
-const favicon = require('express-favicon');
 var errorHandler = require('express-error-handler');
+const cors = require('cors');
+const favicon = require('express-favicon');
+
 var dbConn = require('./utils/dbConn');
 
 //logger
 var morgan = require('morgan');
 var winston = require('./config/winston');
 
+//Database
+mongoose.Promise = global.Promise;
+
+
 var app = express();
 var server;
 
-//all environments
+
+
+//all environments Config
+app.use(cors());
 app.set('port', process.env.PORT || 3000);
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(morgan('combined', { stream: winston.stream }));
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(cookieParser('secret'));
+app.use(flash());
+app.use(session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: false,
+    cookie: { secure: true }
+}));
 
 
 // development only
 if ('development' == app.get('env')) {
     app.use(errorHandler({server: server}));
-
-	var dbString = dbConn(app.get('env'));
-    mongoose.connect(dbString, { useNewUrlParser: true });
+}
+//Configure isProduction variable
+const isProduction = process.env.NODE_ENV === 'production';
+if(!isProduction) {
+    app.use(errorHandler());
 }
 
-
-//load all files in models dir
-fs.readdirSync(__dirname + '/models').forEach(function(filename) {
-    if (~filename.indexOf('.js')) require(__dirname + '/models/' + filename)
+//Config Mongoose
+var dbString = dbConn(app.get('env'));
+mongoose.connect(dbString, {
+    useCreateIndex: true,
+    useNewUrlParser: true
 });
-
-
-//Database
-mongoose.Promise = global.Promise;
+mongoose.set('debug', true);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -54,34 +69,55 @@ db.once('open', function() {
 	winston.info("Connected to mongodb");
 });
 
+//Error handlers & middlewares
+// if(!isProduction) {
+//     app.use((err, req, res) => {
+//         res.status(err.status || 500);
+//
+//         res.json({
+//             errors: {
+//                 message: err.message,
+//                 error: err,
+//             },
+//         });
+//     });
+// }
+// app.use((err, req, res) => {
+//     res.status(err.status || 500);
+//     res.json({
+//         errors: {
+//             message: err.message,
+//             error: {},
+//         },
+//     });
+// });
 
-app.use(cookieParser('secret'));
 
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
 //app.use(expressValidator());
 
 
 
-app.use(session({
-	secret: 'keyboard cat',
-	resave: true,
-	saveUninitialized: false,
-	cookie: { secure: true }
-	}));
-app.use(flash());
-
+//load all files in models dir
+// var User = require('../model/schema/User');
+require('./model/schema/User');
+require('./config/passport');
+// fs.readdirSync(__dirname + '/model/schema/').forEach(function(filename) {
+//     if (~filename.indexOf('.js')) require(__dirname + '/model/schema/' + filename)
+// });
 
 
 app.engine('ejs', require('express-ejs-extend'));
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine','ejs');
 
+
 //routes
-var pages = require('./routes/pages.js')(app);
-var services = require('./routes/services.js')(app, db);
-var adminPages = require('./routes/admin.js')(app);
+app.use(require('./routes'));
+
+var pages = require('./routes/pages_old.js')(app);
+// var services = require('./routes/api/services.js')(app, db);
+// var adminPages = require('./routes/api/admin.js')(app);
 
 // index
 // app.use(function(req, res, next) {
