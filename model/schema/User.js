@@ -1,49 +1,48 @@
 var mongoose = require('mongoose');
 const crypto = require('crypto');
-
+const jwt = require('jsonwebtoken');
 
 var userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    unique: true,
-    required: true,
-    trim: true
-  },
-  username: {
-    type: String,
-    unique: true,
-    required: true,
-    trim: true
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  passwordConf: {
-    type: String,
-    required: true,
-  },
-  role: {
-    type: String,
-    required: true
-  },
-  created: {
-    type: Date,
-    required: true,
-    default: Date.now
-  },
-  token: {
-    type: String,
-    required: false
-  },
-  last: {
-    type: Date,
-    required: false
-  },
-  enabled: {
-    type: Boolean,
-    required: true
-  }
+    username: {
+        type: String,
+        unique: true,
+        required: true,
+        trim: true
+    },
+    email: {
+        type: String,
+        unique: true,
+        required: true,
+        trim: true
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+    hash: String,
+    salt: String,
+    role: {
+        type: String,
+        required: true,
+        default: 'User'
+    },
+    created: {
+        type: Date,
+        required: true,
+        default: Date.now
+    },
+    token: {
+        type: String,
+        required: false
+    },
+    last: {
+        type: Date,
+        required: false
+    },
+    enabled: {
+        type: Boolean,
+        required: true
+    }
 });
 
 userSchema.methods.setPassword = function(password) {
@@ -76,10 +75,19 @@ userSchema.methods.toAuthJSON = function() {
     };
 };
 
-userSchema.methods.login = function () {
-  console.log("asdasdasdas");
-    return this.model('User').find({username: this.username});
-};
+
+userSchema.methods.create = function (username, email, password) {
+    if(username) {
+        this.username = username;
+    }else{
+        this.username = this.email.substring(0, this.email.indexOf('@'));
+    }
+    if(email){
+        this.email = email;
+    }
+    this.enabled = true;
+    this.setPassword(password);
+}
 
 var Users = mongoose.model('Users', userSchema);
 module.exports.userModel = Users;

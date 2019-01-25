@@ -5,8 +5,7 @@ const auth = require('../auth');
 const Users = mongoose.model('Users');
 
 //POST new user route (optional, everyone has access)
-router.post('/', auth.optional, (req, res, next) => {
-    console.log('uuuuuuuuuu');
+router.post('/create', auth.optional, (req, res, next) => {
     const { body: { user } } = req;
 
     if(!user.email) {
@@ -27,7 +26,8 @@ router.post('/', auth.optional, (req, res, next) => {
 
     const finalUser = new Users(user);
 
-    finalUser.setPassword(user.password);
+    // finalUser.setPassword(user.password);
+    finalUser.create(user.username, user.email, user.password);
 
     return finalUser.save()
         .then(() => res.json({ user: finalUser.toAuthJSON() }));
@@ -36,19 +36,20 @@ router.post('/', auth.optional, (req, res, next) => {
 //POST login route (optional, everyone has access)
 router.post('/login', auth.optional, (req, res, next) => {
     const { body: { user } } = req;
-
     if(!user.email) {
         return res.status(422).json({
-            errors: {
-                email: 'is required',
+            message: {
+                type: "error",
+                text: 'user is required',
             },
         });
     }
 
     if(!user.password) {
         return res.status(422).json({
-            errors: {
-                password: 'is required',
+            message: {
+                type: "error",
+                text: "password is required",
             },
         });
     }
@@ -65,7 +66,13 @@ router.post('/login', auth.optional, (req, res, next) => {
             return res.json({ user: user.toAuthJSON() });
         }
 
-        return status(400).info;
+        return res.status(400).json({
+            message: {
+                type: "error",
+                text: "user or password error",
+            },
+        });
+        // return res.status(400).info;
     })(req, res, next);
 });
 
