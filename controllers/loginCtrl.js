@@ -5,8 +5,8 @@ angularGallery.controller('loginCtrl', function($scope) {
 });
 
 angularGallery.controller('loginCtrl', function ($scope, $http) {
-    $scope.login = function() {
 
+    $scope.login = function() {
 
         angular.element('.submit').attr("disabled", "disabled");
         angular.element('#ajax-msg')
@@ -27,16 +27,17 @@ angularGallery.controller('loginCtrl', function ($scope, $http) {
             headers : {'Content-Type': 'application/json'},
             timeout: 15000
         }).then(function mySuccess(response) {
-            console.log(response.data.users);
-            $scope._userpassword = '';
-            $scope.msgText = response.data.users;
+            console.log(response.data.user);
+
+            $scope.msgText = response.data.message.text;
             angular.element('#ajax-msg').removeClass("fade");
             angular.element('.progress').addClass("fade");
 
             if(response.data.user) {
                 angular.element('#ajax-msg').addClass("alert-success");
                 setTimeout( function() {
-                    window.location.href = '/?token=' + response.data.token;
+                    $scope._userpassword = '';
+                    window.location.href = '/?token=' + response.data.user.token;
                     }, 3000);
             }else{
                 if(!angular.isUndefined(response.data.message.type)) {
