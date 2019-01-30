@@ -28,8 +28,6 @@ app.use(morgan('combined', { stream: winston.stream }));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static(__dirname + '/public'));
-
-
 // development only
 if ('development' == app.get('env')) {
     app.use(errorHandler({server: server}));
@@ -38,12 +36,10 @@ if ('development' == app.get('env')) {
     mongoose.connect(dbString, { useNewUrlParser: true });
 }
 
-
 //load all files in models dir
 fs.readdirSync(__dirname + '/models').forEach(function(filename) {
     if (~filename.indexOf('.js')) require(__dirname + '/models/' + filename)
 });
-
 
 //Database
 mongoose.Promise = global.Promise;
