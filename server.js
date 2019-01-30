@@ -1,57 +1,123 @@
 var express = require('express');
 var path = require('path');
-
-
-var config = require('config');
-var mongoose = require("mongoose");
 var bodyParser = require('body-parser');
-
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
+var mongoose = require("mongoose");
+var fs = require('fs');
 var flash = require('express-flash');
+var errorHandler = require('express-error-handler');
+const cors = require('cors');
+const favicon = require('express-favicon');
 
-var app = express();
+var dbConn = require('./utils/dbConn');
+
+//logger
+var morgan = require('morgan');
+var winston = require('./config/winston');
 
 //Database
-var dbCon = config.get('Gallery.dbConfig');
-//var dbString = "mongodb" + '://' + dbCon.get('host') + ':' + dbCon.get('port') + '/' + dbCon.get('dbName');
-var dbString = "mongodb://angall:WrwNtjEp1RWHENlI@quirisoft-shard-00-00-hiyhh.mongodb.net:27017,quirisoft-shard-00-01-hiyhh.mongodb.net:27017,quirisoft-shard-00-02-hiyhh.mongodb.net:27017/gallery?ssl=true&replicaSet=quirisoft-shard-0&authSource=admin&retryWrites=true"
-mongoose.connect(dbString, { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
+
+
+var app = express();
+var server;
+
+
+
+//all environments Config
+app.use(cors());
+app.set('port', process.env.PORT || 3000);
+app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(morgan('combined', { stream: winston.stream }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(cookieParser('secret'));
+app.use(flash());
+app.use(session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: false,
+    cookie: { secure: true }
+}));
+
+
+// development only
+if ('development' == app.get('env')) {
+    app.use(errorHandler({server: server}));
+}
+//Configure isProduction variable
+const isProduction = process.env.NODE_ENV === 'production';
+if(!isProduction) {
+    app.use(errorHandler());
+}
+
+//Config Mongoose
+var dbString = dbConn(app.get('env'));
+mongoose.connect(dbString, {
+    useCreateIndex: true,
+    useNewUrlParser: true
+});
+mongoose.set('debug', true);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
 	console.log("Connected to mongodb");
+	winston.info("Connected to mongodb");
 });
 
+//Error handlers & middlewares
+// if(!isProduction) {
+//     app.use((err, req, res) => {
+//         res.status(err.status || 500);
+//
+//         res.json({
+//             errors: {
+//                 message: err.message,
+//                 error: err,
+//             },
+//         });
+//     });
+// }
+// app.use((err, req, res) => {
+//     res.status(err.status || 500);
+//     res.json({
+//         errors: {
+//             message: err.message,
+//             error: {},
+//         },
+//     });
+// });
 
-app.use(cookieParser('secret'));
 
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
 //app.use(expressValidator());
 
 
 
-app.use(session({
-	secret: 'keyboard cat',
-	resave: true,
-	saveUninitialized: true,
-	cookie: { secure: true }
-	}));
-app.use(flash());
+//load all files in models dir
+// var User = require('../model/schema/User');
+require('./model/schema/User');
+require('./config/passport');
+// fs.readdirSync(__dirname + '/model/schema/').forEach(function(filename) {
+//     if (~filename.indexOf('.js')) require(__dirname + '/model/schema/' + filename)
+// });
 
-app.use(express.static(__dirname + '/public'));
 
 app.engine('ejs', require('express-ejs-extend'));
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine','ejs');
 
+
 //routes
-var pages = require('./routes/pages.js')(app);
-var services = require('./routes/services.js')(app, db);
-var adminPages = require('./routes/admin.js')(app);
+app.use(require('./routes'));
+
+// var pages = require('./routes/pages_old.js')(app);
+// var services = require('./routes/api/services.js')(app, db);
+// var adminPages = require('./routes/api/admin.js')(app);
 
 // index
 // app.use(function(req, res, next) {
@@ -60,5 +126,10 @@ var adminPages = require('./routes/admin.js')(app);
 //     next();
 // });
 
-app.listen(3000, 'localhost');
-console.log("Angular Gallery Server is Listening on port 3000");
+// app.listen(app.get('port'), 'localhost');
+// console.log("Angular Gallery Server is Listening on port 3000");
+
+
+server = app.listen(app.get('port'), function(){
+    console.log('server is running at %s .', server.address().port);
+});

@@ -1,9 +1,34 @@
 {
-	"Gallery":{
+	"local":{
 		"dbConfig": {
 			"host": "localhost",
 			"dbName": "gallery",
 			"port": 27017
 		}
+	},
+	"development": {
+		"connection": {
+			"ssl": true,
+			"replicaSet": "quirisoft-shard-0",
+			"authSource": "admin",
+			"retryWrites": true,
+			"dbName": "gallery"
+		},
+		"servers": [{
+				"name": "mongoCloud00",
+				"host": "quirisoft-shard-00-00-hiyhh.mongodb.net",
+				"port": 27017
+			},
+			{
+				"name": "mongoCloud01",
+				"host": "quirisoft-shard-00-01-hiyhh.mongodb.net",
+				"port": 27017
+			},
+			{
+				"name": "mongoCloud02",
+				"host": "quirisoft-shard-00-02-hiyhh.mongodb.net",
+				"port": 27017
+			}
+		]
 	}
 }

@@ -31,9 +31,19 @@ var appRouter = function(app) {
     app.get("/login", function(req, res) {
         res.render('pages/login', { root: path.join(__dirname, '../views/pages') });
     });
-    app.get("/logout", function(req, res) {
-        // TODO implementar logout
-        res.redirect('/');
+    app.get("/logout", function(req, res, next) {
+        // TODO implementar logout 
+        if (req.session) {
+            // delete session object
+            req.session.destroy(function(err) {
+              if(err) {
+                return next(err);
+              } else {
+                return res.redirect('/');
+              }
+            });
+          }
+        // res.redirect('/');
     });
 
 

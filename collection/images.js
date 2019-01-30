@@ -32,7 +32,7 @@ var getUserImages = function(db, username) {
 
 var getImages = function(db) {
     return new Promise(function (res, rej) {
-        db.collection("images").find({}).toArray(function (err, result) {
+        db.collection("images").find().toArray(function (err, result) {
             if (err) {
                 rej(err);
             } else {

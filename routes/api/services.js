@@ -1,9 +1,44 @@
-var userCollection = require('../collection/users');
-var galleryCollection = require('../collection/gallery');
-var imagesCollection = require('../collection/images');
+var userCollection = require('../../collection/users');
+var galleryCollection = require('../../collection/gallery');
+var imagesCollection = require('../../collection/images');
+// var User = require('../model/schema/User');
 
 var appRouter = function(app, db) {
+
     app.post("/services/login", function (req, res) {
+        var user = User.userModel;
+        var userLogin = new user({
+            username: req.query._username,
+            password: req.query._userpassword
+        });
+        // console.log(user);
+        // var username = req.query._username;
+        // var userpassword = req.query._userpassword;
+
+        userLogin.login(function(err, users){
+            if(er){
+                console.log(err);
+            }else {
+                console.log("as123123123213");
+                console.log(users);
+            }
+            return {
+                valid: false,
+                message: 'Usuario o contraseña incorrecta'
+            }
+
+        })
+            .then(function (data) {
+                res.setHeader('Content-Type', 'application/json');
+                data = {
+                    valid: false,
+                    message: 'Usuario o contraseña incorrecta'
+                }
+                res.send(JSON.stringify(data));
+            });
+    });
+
+    app.post("/services/login1", function (req, res) {
         // console.log(req);
         var username = req.query._username;
         var userpassword = req.query._userpassword;

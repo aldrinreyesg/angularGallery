@@ -5,44 +5,64 @@ angularGallery.controller('loginCtrl', function($scope) {
 });
 
 angularGallery.controller('loginCtrl', function ($scope, $http) {
+
     $scope.login = function() {
-        var timeout = 20000;
+
         angular.element('.submit').attr("disabled", "disabled");
         angular.element('#ajax-msg')
             .addClass("fade")
             .removeClass("alert-success")
             .removeClass("alert-danger");
         angular.element('.progress').removeClass("fade");
+        var user = {
+                user: {
+                    email: $scope._username,
+                    password: $scope._userpassword
+                }
+            };
         $http({
             method: "POST",
-            url: "http://localhost:3000/services/login",
-            params: {
-                _username: $scope._username,
-                _userpassword: $scope._userpassword
-            },
-            timeout: timeout
+            url: "http://localhost:3000/api/users/login",
+            data: JSON.stringify(user),
+            headers : {'Content-Type': 'application/json'},
+            timeout: 15000
         }).then(function mySuccess(response) {
-            console.log(response);
-            $scope._userpassword = '';
-            $scope.msgText = response.data.message;
+            console.log(response.data.user);
+
+            $scope.msgText = response.data.message.text;
             angular.element('#ajax-msg').removeClass("fade");
             angular.element('.progress').addClass("fade");
 
-            if(response.data.valid) {
+            if(response.data.user) {
                 angular.element('#ajax-msg').addClass("alert-success");
                 setTimeout( function() {
-                    window.location.href = '/?token=' + response.data.token;
+                    $scope._userpassword = '';
+                    window.location.href = '/?token=' + response.data.user.token;
                     }, 3000);
             }else{
+                if(!angular.isUndefined(response.data.message.type)) {
+                    $scope.msgText = response.data.message.text;
+                }else{
+                    $scope.msgText = "timeout";
+                }
                 angular.element('#ajax-msg').addClass("alert-danger");
+                angular.element('#ajax-msg').removeClass("fade");
+                angular.element('.progress').addClass("fade");
                 angular.element('.submit').removeAttr("disabled");
+
             }
         }, function myError(response) {
             console.log(response);
-            $scope.msgType = false;
-            $scope.msgText = response.data.message;
+            if(angular.isUndefined(response.data.message)) {
+                $scope.msgText = "timeout";
+            }else {
+                $scope.msgType = response.data.message.type;
+                $scope.msgText = response.data.message.text;
+            }
+            angular.element('#ajax-msg').addClass("alert-danger");
             angular.element('#ajax-msg').removeClass("fade");
             angular.element('.progress').addClass("fade");
+            angular.element('.submit').removeAttr("disabled");
         });
     }
     $scope.cancel = function() {
