@@ -8,9 +8,6 @@
     <title>Image Gallery</title>
     <% include ../partials/head.ejs %>
     <style>
-        .ng-required{
-            border-color: #fb7977;
-        }
         .field-message {
             padding-left:.5rem;
             color: #fb4445;
@@ -78,11 +75,13 @@
     </div>
     <% include ../partials/footer.ejs %>
     <% include ../partials/javascripts.ejs %>
+    <script src="http://code.angularjs.org/1.7.6/angular-cookies.min.js"></script>
     <script>
         $(document).ready(function () {
             $(".focus").focus();
         });
     </script>
+
     <script src="controllers/loginCtrl.js"></script>
 </body>
 </html>

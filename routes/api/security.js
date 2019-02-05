@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const router = require('express').Router();
 const auth = require('../auth');
-const Users = mongoose.model('Users');
+const User = mongoose.model('Users');
 
 //POST new user route (optional, everyone has access)
 router.post('/create', auth.optional, (req, res, next) => {
@@ -24,7 +24,7 @@ router.post('/create', auth.optional, (req, res, next) => {
         });
     }
 
-    const finalUser = new Users(user);
+    const finalUser = new User(user);
 
     // finalUser.setPassword(user.password);
     finalUser.create(user.username, user.email, user.password);
@@ -85,7 +85,7 @@ router.post('/login', auth.optional, (req, res, next) => {
 router.get('/current', auth.required, (req, res, next) => {
     const { payload: { id } } = req;
 
-    return Users.findById(id)
+    return User.findById(id)
         .then((user) => {
             if(!user) {
                 return res.sendStatus(400);

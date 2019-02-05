@@ -20,6 +20,9 @@ function publicFormatter(value, row, index) {
         return '<span class="text-center text-danger"><i class="fas fa-eye-slash"></i></span>';
     }
 }
+// function optionsFormatter(value, row, index) {
+//     return '<input type="checkbox" class="form-control">';
+// }
 function shortenFormatter(value, row, index) {
     var str = '';
     if (value.length > 12){
@@ -33,7 +36,7 @@ function shortenFormatter(value, row, index) {
 function checkboxFormatter(value, row, index) {
     var html =
         // '<div class="form-group">' +
-        '<input type="checkbox" class="form-control">';
+        '<input type="checkbox">';
         // '</div>';
     return html;
 }
