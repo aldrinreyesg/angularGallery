@@ -20,6 +20,12 @@ angular
             $scope.btnAccept = "Guardar";
             $scope.userForm.$setPristine();
             $scope.userForm.$setUntouched();
+            // $scope.userForm = {
+            //     username : "",
+            //     password : "",
+            //     passwordRepeat : "",
+            //     email : ""
+            // };
             angular.element("#modalUpdate").modal('toggle');
         };
 
@@ -27,6 +33,7 @@ angular
             $scope.modalTitle = "Borrar elementos";
             $scope.modalText = "Está seguro de eliminar estos elementos?";
             $scope.btnAccept = "Eliminar";
+            angular.element("#table-options").addClass("d-none");
             angular.element("#modalMsg").modal('toggle');
         };
 
@@ -69,4 +76,21 @@ angular
         }
 
 
-    }]);
+    }])
+    .directive("compareTo", function () {
+        return {
+            require: "ngModel",
+            scope:
+                {
+                    passwordRepeat: "=compareTo"
+                },
+            link: function (scope, element, attributes, paramval) {
+                paramval.$validators.compareTo = function (val) {
+                    return val == scope.passwordRepeat;
+                };
+                scope.$watch("passwordRepeat", function () {
+                    paramval.$validate();
+                });
+            }
+        };
+    });

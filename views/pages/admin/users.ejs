@@ -18,9 +18,9 @@
                 <div id="toolbar">
                     <button class="btn btn-primary" ng-click="btnAdd()">Add</button>
                     <div class="btn-group d-none" id="table-options">
-                        <button class="btn " id="btnBorrar" ng-click="btnBorrar()"><i class="fas fa-trash-alt"></i></button>
-                        <button class="btn " id="btnEnable" ng-click="btnEnable()"><i class="fas fa-user-check"></i></button>
-                        <button class="btn " id="btnDesable" ng-click="btnDeseable()"><i class="fas fa-user-times"></i></button>
+                        <button class="btn" ng-click="btnBorrar()"><i class="fas fa-trash-alt"></i></button>
+                        <button class="btn" ng-click="btnEnable()"><i class="fas fa-user-check"></i></button>
+                        <button class="btn" ng-click="btnDeseable()"><i class="fas fa-user-times"></i></button>
                     </div>
                 </div>
                 <table id="table"
@@ -93,11 +93,15 @@
                 </button>
             </div>
             <div class="modal-body">
-
-                <form action="" name="userForm" ng-model="userForm">
+                <form action="">
+                    <div class="rounded border mx-auto mb-2 justify-content-center d-flex p-2" style="width: 150px; height: 150px;">
+                        <img src="/images/user.jpg" alt="user" width="120px" height="120px">
+                    </div>
+                </form>
+                <form action="" name="userForm" ng-model="userForm" class="needs-validation" novalidate>
                     <div class="form-group">
                         <!--<label for="name">Username</label>-->
-                        <input type="text" name="username" id="name" class="form-control form-control-sm" placeholder="Username" ng-model="username" ng-minlength="6" ng-maxlength="10" required>
+                        <input type="text" name="username" id="name" class="form-control form-control-sm" placeholder="Username" ng-model="username" ng-class="{'is-invalid':userForm.username.$touched && userForm.username.$invalid}" ng-minlength="6" ng-maxlength="10" required>
                         <span class="field-message" ng-show="userForm.username.$touched && userForm.username.$invalid">Username is required, and must have minimum 6 characters and maximun 10.</span>
                     </div>
                     <div class="form-group">
@@ -112,13 +116,13 @@
                     </div>
                     <div class="form-group">
                         <!--<label for="email" class="custom-control-label">Repeat Password</label>-->
-                        <input type="password" name="passwordRepeat" id="passwordRepeat" class="form-control form-control-sm" placeholder="Repeat Password" ng-model="pass2" equal="{{user.pass1}}" required>
-                        <span class="field-message" ng-show="userForm.passwordRepeat.$error.equal">Password must be identical</span>
+                        <input type="password" name="passwordRepeat" id="passwordRepeat" class="form-control form-control-sm" placeholder="Repeat Password" ng-model="pass2" compareTo="password" required>
+                        <span class="field-message" ng-show="userForm.passwordRepeat.$error.compareTo">Password must be identical</span>
                     </div>
                     <!--<div class="form-control">-->
                         <!--<label for="role">Role</label>-->
                         <select name="role" id="role" class="form-control form-control-sm">
-                            <option value="0">Select Role</option>
+                            <option>Select Role</option>
                             <option value="1">User</option>
                             <option value="2">Admin</option>
                         </select>
