@@ -3,6 +3,12 @@
 <div class="container-sm">
     <h4>Usuarios</h4>
 </div>
+<div class="alert alert-dismissible fade w-50 d-none" id="ajax-msg" role="alert">
+    <span>{{ msgText }}</span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 <div class="row mr-2">
     <div class="col-2">
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -93,6 +99,9 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div id="modalProgessBar" class="progress fade">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                </div>
                 <form action="">
                     <div class="rounded border mx-auto mb-2 justify-content-center d-flex p-2" style="width: 150px; height: 150px;">
                         <img src="/images/user.jpg" alt="user" width="120px" height="120px">
@@ -116,19 +125,20 @@
                     </div>
                     <div class="form-group">
                         <!--<label for="email" class="custom-control-label">Repeat Password</label>-->
-                        <input type="password" name="passwordRepeat" id="passwordRepeat" class="form-control form-control-sm" placeholder="Repeat Password" ng-model="pass2" compareTo="password" required>
-                        <span class="field-message" ng-show="userForm.passwordRepeat.$error.compareTo">Password must be identical</span>
+                        <input type="password" name="passwordRepeat" id="passwordRepeat" class="form-control form-control-sm" placeholder="Repeat Password" ng-model="pass2" required>
+                        <span class="field-message" ng-show="pass1 != pass2">Password must be identical</span>
                     </div>
                     <!--<div class="form-control">-->
                         <!--<label for="role">Role</label>-->
-                        <select name="role" id="role" class="form-control form-control-sm">
-                            <option>Select Role</option>
-                            <option value="1">User</option>
-                            <option value="2">Admin</option>
+                        <select name="role" id="role" class="form-control form-control-sm" ng-model="role" required>
+                            <option value="">Select Role</option>
+                            <option value="User">User</option>
+                            <option value="Admin">Admin</option>
                         </select>
+                    <span class="field-message" ng-show="userForm.role.$required">Role is required</span>
                     <!--</div>-->
                     <div class="custom-control custom-switch mt-2">
-                        <input type="checkbox" class="custom-control-input" checked id="customSwitch1">
+                        <input type="checkbox" class="custom-control-input" checked id="customSwitch1" ng-model="enabled">
                         <label class="custom-control-label" for="customSwitch1">Enabled</label>
                     </div>
                 </form>
@@ -136,7 +146,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" id="btnAccept">{{btnAccept}}</button>
+                <button type="button" class="btn btn-primary" ng-click="btnSend()" ng-disabled="userForm.$invalid">{{btnEnviar}}</button>
             </div>
         </div>
     </div>
