@@ -44,5 +44,8 @@
      "bugs": {
           "url": ""
      },
-     "homepage": "/"
+     "homepage": "/",
+     "nodemonConfig": {
+       "ignore": ["public/*", "logs/*"]
+     }
 }
