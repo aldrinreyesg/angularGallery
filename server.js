@@ -10,11 +10,11 @@ var errorHandler = require('express-error-handler');
 const cors = require('cors');
 const favicon = require('express-favicon');
 
-var dbConn = require('./utils/dbConn');
+var dbConn = require('./src/utils/dbConn');
 
 //logger
 var morgan = require('morgan');
-var winston = require('./config/winston');
+var winston = require('./app/config/winston');
 
 //Database
 mongoose.Promise = global.Promise;
@@ -100,20 +100,20 @@ db.once('open', function() {
 
 //load all files in models dir
 // var User = require('../model/schema/User');
-require('./model/schema/User');
-require('./config/passport');
+require('./src/model/schema/User');
+require('./app/config/passport');
 // fs.readdirSync(__dirname + '/model/schema/').forEach(function(filename) {
 //     if (~filename.indexOf('.js')) require(__dirname + '/model/schema/' + filename)
 // });
 
 
 app.engine('ejs', require('express-ejs-extend'));
-app.set('views',path.join(__dirname,'views'));
+app.set('views',path.join(__dirname,'/src/views'));
 app.set('view engine','ejs');
 
 
 //routes
-app.use(require('./routes'));
+app.use(require('./src/routes'));
 
 // var pages = require('./routes/pages_old.js')(app);
 // var services = require('./routes/api/services_old.js')(app, db);

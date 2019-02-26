@@ -4,7 +4,7 @@ var fs = require("fs");
 function dbSting(env) {
     var conn;
     var str = "mongodb://angall:WrwNtjEp1RWHENlI@";
-    var contents = fs.readFileSync("./config/default.json");
+    var contents = fs.readFileSync("./app/config/default.json");
     var config = JSON.parse(contents);
     if('development' == env) {
         var dev = config.development;

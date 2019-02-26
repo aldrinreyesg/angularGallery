@@ -38,7 +38,7 @@
      "main": "server.js",
      "repository": {
           "type": "git",
-          "url": ""
+          "url": "https://github.com/aldrinreyesg/angularGallery"
      },
      "author": "Aldrin Reyes G.",
      "license": "MIT",
@@ -47,6 +47,6 @@
      },
      "homepage": "/",
      "nodemonConfig": {
-       "ignore": ["public/*", "logs/*"]
+       "ignore": ["public/*", "app/logs/*"]
      }
 }
