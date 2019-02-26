@@ -116,7 +116,7 @@ app.set('view engine','ejs');
 app.use(require('./routes'));
 
 // var pages = require('./routes/pages_old.js')(app);
-// var services = require('./routes/api/services.js')(app, db);
+// var services = require('./routes/api/services_old.js')(app, db);
 // var adminPages = require('./routes/api/admin.js')(app);
 
 // index

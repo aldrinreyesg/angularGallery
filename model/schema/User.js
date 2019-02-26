@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+const isset = require('isset');
 
 var userSchema = new mongoose.Schema({
     username: {
@@ -37,6 +38,10 @@ var userSchema = new mongoose.Schema({
     },
     last: {
         type: Date,
+        required: false
+    },
+    imagen: {
+        type: String,
         required: false
     },
     enabled: {
@@ -77,18 +82,20 @@ userSchema.methods.toAuthJSON = function() {
 };
 
 
-userSchema.methods.create = function (username, email, password) {
-    if(username) {
-        this.username = username;
-    }else{
-        this.username = this.email.substring(0, this.email.indexOf('@'));
-    }
-    if(email){
-        this.email = email;
-    }
-    this.enabled = true;
+userSchema.methods.create = function (username, email, password, role, enabled) {
+    this.username = username;
+    this.email = email;
+    this.enabled = isset(enabled) ? enabled : true;
+    this.role = isset(role) ? role : 'User';
     this.setPassword(password);
-}
+};
+
+// userSchema.methods.delete = function (id) {
+//     this.deleteOne({'_id': id}, function (err) {
+//         if (err) return handleError(err);
+//     });
+//     return true;
+// };
 
 var Users = mongoose.model('Users', userSchema);
 module.exports.userModel = Users;
