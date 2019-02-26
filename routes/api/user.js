@@ -20,7 +20,7 @@ router.get('/list', auth.required, (req, res, next) => {
                         users
                     });
                 }
-            })
+            });
 });
 
 module.exports = router;

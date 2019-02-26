@@ -5,21 +5,32 @@ const auth = require('../auth');
 const User = mongoose.model('Users');
 
 //POST new user route (optional, everyone has access)
-router.post('/create', auth.optional, (req, res, next) => {
+router.post('/create', auth.required, (req, res, next) => {
     const { body: { user } } = req;
 
     if(!user.email) {
         return res.status(422).json({
-            errors: {
-                email: 'is required',
+            message: {
+                type: "error",
+                text: "email is requiered",
+            },
+        });
+    }
+
+    if(!user.username) {
+        return res.status(422).json({
+            message: {
+                type: "error",
+                text: "username is requiered",
             },
         });
     }
 
     if(!user.password) {
         return res.status(422).json({
-            errors: {
-                password: 'is required',
+            message: {
+                type: "error",
+                text: "password is requiered",
             },
         });
     }
@@ -27,10 +38,73 @@ router.post('/create', auth.optional, (req, res, next) => {
     const finalUser = new User(user);
 
     // finalUser.setPassword(user.password);
-    finalUser.create(user.username, user.email, user.password);
+    finalUser.create(user.username, user.email, user.password, user.role, user.enabled);
+
+    // return finalUser.save()
+    //     .then(() => res.json({ user: finalUser.toAuthJSON() }));
 
     return finalUser.save()
-        .then(() => res.json({ user: finalUser.toAuthJSON() }));
+        .then(() => User
+        .find()
+        .select('_id role username email created enabled')
+        .exec(function (err, users) {
+            if (err) return handleError(err);
+            if (users){
+                return res.status(200).json({
+                    message: {
+                        type: "info",
+                        text: "lista de usuarios",
+                    },
+                    users
+                });
+            }
+        }));
+});
+
+router.post('/remove', auth.required, (req, res, next) => {
+    const {body: {user}} = req;
+
+    if (!user.ids) {
+        return res.status(422).json({
+            message: {
+                type: "error",
+                text: "id is requiered",
+            },
+        });
+    }
+
+    var messages = [];
+    user.ids.forEach( function (value, key) {
+        var us = {_id : value};
+        const finalUser = new User(us);
+        result = finalUser.remove(value, function (err, doc) {
+            console.log(err);
+            console.log(doc);
+            if(err){
+                return false;
+            }else{
+                return true;
+            }
+        });
+        if(result){
+            return message= {
+                type: "info",
+                text: "Usuario id " + value + "eliminado",
+            }
+        }else{
+            message= {
+                type: "error",
+                text: "Error al eliminar Usuario id " + value,
+            }
+        }
+        messages.push({message});
+
+    });
+    console.log(messages);
+    return res.status(200).json({
+        messages
+    });
+
 });
 
 //POST login route (optional, everyone has access)
