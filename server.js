@@ -43,7 +43,15 @@ app.use(session({
     saveUninitialized: false,
     cookie: { secure: true }
 }));
-
+app.use(express.static(path.join(__dirname, '/node_modules/bootstrap/dist')));
+app.use(express.static(path.join(__dirname, '/node_modules/jquery/dist')));
+app.use(express.static(path.join(__dirname, '/node_modules/bootstrap-table/dist')));
+app.use(express.static(path.join(__dirname, '/node_modules/angular-cookies')));
+app.use(express.static(path.join(__dirname, '/node_modules/moment')));
+app.use(express.static(path.join(__dirname, '/node_modules/angular')));
+app.use(express.static(path.join(__dirname, '/node_modules/angular-file-upload/dist')));
+app.use(express.static(path.join(__dirname, '/node_modules/@fortawesome/fontawesome-free')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 // development only
 if ('development' == app.get('env')) {
