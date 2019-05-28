@@ -51,6 +51,7 @@ app.use(express.static(path.join(__dirname, '/node_modules/moment')));
 app.use(express.static(path.join(__dirname, '/node_modules/angular')));
 app.use(express.static(path.join(__dirname, '/node_modules/angular-file-upload/dist')));
 app.use(express.static(path.join(__dirname, '/node_modules/@fortawesome/fontawesome-free')));
+app.use(express.static(path.join(__dirname, '/node_modules/roboto-fontface')));
 app.use(express.static(path.join(__dirname, '/public')));
 
 // development only

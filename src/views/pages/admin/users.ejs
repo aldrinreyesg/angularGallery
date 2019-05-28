@@ -22,15 +22,15 @@
         <div class="tab-content" id="v-pills-tabContent">
             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                 <div id="toolbar">
-                    <button class="btn btn-primary" ng-click="btnAdd()">Add</button>
+                    <button class="btn btn-sm btn-primary" ng-click="btnAdd()">Add</button>
                     <div class="btn-group d-none" id="table-options">
-                        <button class="btn" ng-click="btnBorrar()"><i class="fas fa-trash-alt"></i></button>
-                        <button class="btn" ng-click="btnEnable()"><i class="fas fa-user-check"></i></button>
-                        <button class="btn" ng-click="btnDeseable()"><i class="fas fa-user-times"></i></button>
+                        <button class="btn btn-sm" ng-click="btnBorrar()"><i class="fas fa-trash-alt"></i></button>
+                        <button class="btn btn-sm" ng-click="btnEnable()"><i class="fas fa-user-check"></i></button>
+                        <button class="btn btn-sm" ng-click="btnDeseable()"><i class="fas fa-user-times"></i></button>
                     </div>
                 </div>
                 <table id="table"
-                    data-classes="table"
+                    data-classes="table table-sm"
                     data-striped="true"
                     data-search="true"
                     data-pagination="true"
@@ -152,7 +152,7 @@
     </div>
 </div>
 
-<script src="/js/bootstrap-table-formatter.js"></script>
+<script src="/js/bootstrap-table-formatter.min.js"></script>
 <script>
     $("#table").on('uncheck.bs.table', function (row, el) {
         var selected = $("#table").bootstrapTable('getSelections');
