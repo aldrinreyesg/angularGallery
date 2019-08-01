@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const router = require('express').Router();
-const auth = require('../auth');
+const auth = require(__basedir + '/app/routes/auth');
 const User = mongoose.model('Users');
 
 

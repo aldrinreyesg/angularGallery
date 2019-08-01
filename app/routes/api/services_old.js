@@ -1,6 +1,6 @@
-var userCollection = require('../../collection/users');
-var galleryCollection = require('../../collection/gallery');
-var imagesCollection = require('../../collection/images');
+var userCollection = require(__basedir + '/src/collection/users');
+var galleryCollection = require(__basedir + '/src/collection/gallery');
+var imagesCollection = require(__basedir + '/src/collection/images');
 // var User = require('../model/schema/User');
 
 var appRouter = function(app, db) {
@@ -33,7 +33,7 @@ var appRouter = function(app, db) {
                 data = {
                     valid: false,
                     message: 'Usuario o contraseña incorrecta'
-                }
+                };
                 res.send(JSON.stringify(data));
             });
     });
@@ -51,7 +51,7 @@ var appRouter = function(app, db) {
             // console.log(user.name);
             if (user != null) {
                 if (user.name === username && user.pass === userpassword) {
-                    const crypto = require('crypto')
+                    const crypto = require('crypto');
                     const token = crypto.randomBytes(24).toString('hex');
                     console.log('Usuario identificado correctamente');
                     return {
@@ -195,7 +195,7 @@ var appRouter = function(app, db) {
                 galleryid: 1,
                 created: moment().format("YYYY-MM-DD hh:mm:ss"),
                 url: "http://localhost:3000/gallery/image/" + row.image.split('\\').pop()
-            }
+            };
 
             var dataPromise = imagesCollection.setImage(db, imageRow);
             dataPromise
@@ -220,7 +220,7 @@ var appRouter = function(app, db) {
             var data = {
                 valid: false,
                 message: 'Estructura enviada no es válida.'
-            }
+            };
             res.setHeader('Content-Type', 'application/json');
             res.send(JSON.stringify(data));
         }
@@ -257,10 +257,10 @@ var appRouter = function(app, db) {
             var data = {
                 valid: false,
                 message: 'Estructura enviada no es válida.'
-            }
+            };
             res.setHeader('Content-Type', 'application/json');
             res.send(JSON.stringify(data));
         }
     });
-}
+};
 module.exports = appRouter;

@@ -4,13 +4,13 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var mongoose = require("mongoose");
-var fs = require('fs');
+//var fs = require('fs');
 var flash = require('express-flash');
 var errorHandler = require('express-error-handler');
 const cors = require('cors');
 const favicon = require('express-favicon');
-
-var dbConn = require('./src/utils/dbConn');
+global.__basedir = __dirname;
+var dbConn = require(__basedir + '/app/utils/dbConn');
 
 //logger
 var morgan = require('morgan');
@@ -21,7 +21,7 @@ mongoose.Promise = global.Promise;
 
 
 var app = express();
-var server;
+var server="";
 
 
 
@@ -55,7 +55,7 @@ app.use(express.static(path.join(__dirname, '/node_modules/roboto-fontface')));
 app.use(express.static(path.join(__dirname, '/public')));
 
 // development only
-if ('development' == app.get('env')) {
+if ('development' === app.get('env')) {
     app.use(errorHandler({server: server}));
 }
 //Configure isProduction variable
@@ -109,7 +109,7 @@ db.once('open', function() {
 
 //load all files in models dir
 // var User = require('../model/schema/User');
-require('./src/model/schema/User');
+require('./app/model/schema/User');
 require('./app/config/passport');
 // fs.readdirSync(__dirname + '/model/schema/').forEach(function(filename) {
 //     if (~filename.indexOf('.js')) require(__dirname + '/model/schema/' + filename)
@@ -122,7 +122,7 @@ app.set('view engine','ejs');
 
 
 //routes
-app.use(require('./src/routes'));
+app.use(require('./app/routes'));
 
 // var pages = require('./routes/pages_old.js')(app);
 // var services = require('./routes/api/services_old.js')(app, db);

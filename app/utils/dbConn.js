@@ -2,11 +2,11 @@
 var fs = require("fs");
 
 function dbSting(env) {
-    var conn;
+    // var conn;
     var str = "mongodb://angall:WrwNtjEp1RWHENlI@";
     var contents = fs.readFileSync("./app/config/default.json");
     var config = JSON.parse(contents);
-    if('development' == env) {
+    if(env === 'development') {
         var dev = config.development;
         for (server in dev.servers)
         {
@@ -20,7 +20,7 @@ function dbSting(env) {
             '&authSource=' + dev.connection.authSource +
             '&retryWrites=' + dev.connection.retryWrites;
     }else{
-        var env = config.local;
+        //env = config.local;
         // conn = config.get('local');
     }
     return str;

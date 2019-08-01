@@ -80,11 +80,7 @@ router.post('/remove', auth.required, (req, res, next) => {
         result = finalUser.remove(value, function (err, doc) {
             console.log(err);
             console.log(doc);
-            if(err){
-                return false;
-            }else{
-                return true;
-            }
+            return !err;
         });
         if(result){
             return message= {

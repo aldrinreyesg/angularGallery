@@ -16,7 +16,7 @@ var imagesSchema = new mongoose.Schema({
         required: true
     },
     fileType: {
-        type: String
+        type: String,
         required: true
     },
     galleryid: {
@@ -30,7 +30,7 @@ var imagesSchema = new mongoose.Schema({
     url: {
         type: String,
         required: false
-    }
+    },
     created: {
         type: Date,
         required: true,

@@ -6,7 +6,7 @@ const path = require('path');
 
 router.get('/', auth.optional, (req, res, next) => {
     if(isset(req.query.token)){
-        var token = req.query.token;
+        // var token = req.query.token;
         res.redirect('/admin');
 
     }else {

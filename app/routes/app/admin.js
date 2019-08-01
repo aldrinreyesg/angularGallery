@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../auth');
-const isset = require('isset');
+//const auth = require('../auth');
+//const isset = require('isset');
 const path = require('path');
 
-var flash = require('express-flash');
+//var flash = require('express-flash');
 
 router.get("/", function(req, res) {
     res.render('pages/admin/home', {

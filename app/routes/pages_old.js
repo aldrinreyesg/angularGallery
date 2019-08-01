@@ -17,7 +17,7 @@ var appRouter = function(app) {
 
 	app.get("/", function(req, res) {
 	    if(isset(req.query.token)){
-            var token = req.query.token;
+            // var token = req.query.token;
             res.redirect('/admin');
 
         }else {
