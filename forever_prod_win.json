@@ -1,0 +1,11 @@
+{
+  // Comments are supported
+  "uid": "angularGallery",
+  "append": true,
+  "watch": true,
+  "script": "server.js",
+  "sourceDir": "d:\\Aldrin\\Documents\\proyectos\\angularGallery\\",
+  "logFile": "d:\\Aldrin\\Documents\\proyectos\\angularGallery\\logs\\forever.log",
+  "outFile": "d:\\Aldrin\\Documents\\proyectos\\angularGallery\\logs\\out.log",
+  "errFile": "d:\\Aldrin\\Documents\\proyectos\\angularGallery\\logs\\error.log"
+}
