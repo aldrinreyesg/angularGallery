@@ -1,8 +1,8 @@
 #modules
 node_modules/
 
-#phpStorm
+#WebStorm
 .idea/
 
 #logs
-logs/
+logs/*

@@ -4,24 +4,24 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var mongoose = require("mongoose");
-var fs = require('fs');
+//var fs = require('fs');
 var flash = require('express-flash');
 var errorHandler = require('express-error-handler');
 const cors = require('cors');
 const favicon = require('express-favicon');
-
-var dbConn = require('./utils/dbConn');
+global.__basedir = __dirname;
+var dbConn = require(__basedir + '/app/utils/dbConn');
 
 //logger
 var morgan = require('morgan');
-var winston = require('./config/winston');
+var winston = require('./app/config/winston');
 
 //Database
 mongoose.Promise = global.Promise;
 
 
 var app = express();
-var server;
+var server="";
 
 
 
@@ -43,10 +43,19 @@ app.use(session({
     saveUninitialized: false,
     cookie: { secure: true }
 }));
-
+app.use(express.static(path.join(__dirname, '/node_modules/bootstrap/dist')));
+app.use(express.static(path.join(__dirname, '/node_modules/jquery/dist')));
+app.use(express.static(path.join(__dirname, '/node_modules/bootstrap-table/dist')));
+app.use(express.static(path.join(__dirname, '/node_modules/angular-cookies')));
+app.use(express.static(path.join(__dirname, '/node_modules/moment')));
+app.use(express.static(path.join(__dirname, '/node_modules/angular')));
+app.use(express.static(path.join(__dirname, '/node_modules/angular-file-upload/dist')));
+app.use(express.static(path.join(__dirname, '/node_modules/@fortawesome/fontawesome-free')));
+app.use(express.static(path.join(__dirname, '/node_modules/roboto-fontface')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 // development only
-if ('development' == app.get('env')) {
+if ('development' === app.get('env')) {
     app.use(errorHandler({server: server}));
 }
 //Configure isProduction variable
@@ -100,20 +109,20 @@ db.once('open', function() {
 
 //load all files in models dir
 // var User = require('../model/schema/User');
-require('./model/schema/User');
-require('./config/passport');
+require('./app/model/schema/User');
+require('./app/config/passport');
 // fs.readdirSync(__dirname + '/model/schema/').forEach(function(filename) {
 //     if (~filename.indexOf('.js')) require(__dirname + '/model/schema/' + filename)
 // });
 
 
 app.engine('ejs', require('express-ejs-extend'));
-app.set('views',path.join(__dirname,'views'));
+app.set('views',path.join(__dirname,'/src/views'));
 app.set('view engine','ejs');
 
 
 //routes
-app.use(require('./routes'));
+app.use(require('./app/routes'));
 
 // var pages = require('./routes/pages_old.js')(app);
 // var services = require('./routes/api/services_old.js')(app, db);

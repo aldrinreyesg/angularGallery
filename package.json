@@ -3,8 +3,13 @@
      "version": "0.0.1",
      "description": "Angular Gallery Proyect",
      "dependencies": {
-          "angular-cookie": "^4.1.0",
+          "@fortawesome/fontawesome-free": "^5.8.1",
+          "angular": "^1.7.8",
+          "angular-cookies": "^1.7.8",
+          "angular-file-upload": "^2.5.0",
           "app-root-path": "^2.1.0",
+          "bootstrap": "^4.3.1",
+          "bootstrap-table": "^1.14.2",
           "config": "^3.0.1",
           "cookie-parser": "^1.4.3",
           "cors": "^2.8.5",
@@ -21,24 +26,27 @@
           "install": "^0.12.2",
           "is-valid-json": "^1.0.2",
           "isset": "^1.0.4",
+          "jquery": "^3.4.1",
           "moments": "0.0.2",
           "mongoose": "^5.4.1",
           "morgan": "^1.9.1",
           "node-os-utils": "^1.0.7",
-          "nodemon": "^1.18.9",
-          "npm": "^6.5.0",
+          "npm": "^6.10.2",
           "passport": "^0.4.0",
           "passport-local": "^1.0.0",
+          "popper.js": "^1.15.0",
+          "roboto-fontface": "^0.10.0",
           "winston": "^3.1.0"
      },
      "engine": "node >=0.6.x",
      "scripts": {
-          "start": "nodemon server.js"
+          "dev": "nodemon server.js",
+          "prod": "forever start forever_prod_win.json"
      },
      "main": "server.js",
      "repository": {
           "type": "git",
-          "url": ""
+          "url": "https://github.com/aldrinreyesg/angularGallery"
      },
      "author": "Aldrin Reyes G.",
      "license": "MIT",
@@ -47,6 +55,9 @@
      },
      "homepage": "/",
      "nodemonConfig": {
-       "ignore": ["public/*", "logs/*"]
+          "ignore": [
+               "public/*",
+               "app/logs/*"
+          ]
      }
 }
