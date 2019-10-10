@@ -31,7 +31,6 @@
           "mongoose": "^5.4.1",
           "morgan": "^1.9.1",
           "node-os-utils": "^1.0.7",
-          "nodemon": "^1.18.9",
           "npm": "^6.10.2",
           "passport": "^0.4.0",
           "passport-local": "^1.0.0",
@@ -41,7 +40,8 @@
      },
      "engine": "node >=0.6.x",
      "scripts": {
-          "start": "nodemon server.js"
+          "dev": "nodemon server.js",
+          "prod": "forever start forever_prod_win.json"
      },
      "main": "server.js",
      "repository": {
